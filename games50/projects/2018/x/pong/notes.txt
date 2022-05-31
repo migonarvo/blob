@@ -1,0 +1,207 @@
+if not(ball.dx == 0) then
+
+
+    ballAngle = math.atan(ball.dy/ball.dx)
+    ballDistX = player2.x - ball.x
+    ballPosPred = ballDistX*(math.sin(ballAngle)/math.sin(3.1415926535898*(1 - 1/4 - ballAngle)))
+    p2linex = VIRTUAL_WIDTH - 15
+    p1linex = 15
+
+    
+
+        --[[ ez answer boo, but it leads to an interesting
+        bug where at high speeds the ball just goes through the paddle.
+        i think it is because the change dx is grater than both the paddle's
+        x coordinate and the ball's x coordinate, so the ball warps from the
+        front to behind the paddle, thus there is no collision, because the
+        innermost side of the collision box for the ball warps way past the
+        paddle's collision box's outermost side. Could be fixed by recognizing
+        the lowest speed at which this bug happens and making it the ball's
+        top speed. ]]
+    --[[ if ball.y <player2.y -10 then        
+        player2.dy = -PADDLE_SPEED
+    elseif ball.y >player2.y+10 then
+        player2.dy = PADDLE_SPEED
+    else
+        player2.dy = 0
+    end
+
+    if ball.y - 4<player1.y - 10 then        
+        player1.dy = -PADDLE_SPEED
+    elseif ball.y - 4>player1.y + 10 then
+        player1.dy = PADDLE_SPEED
+    else
+        player1.dy = 0
+    end  ]]
+    
+    --[[ if ball.dx>0 then
+
+        if ball.y<player2.y -10 then        
+            player2.dy = -PADDLE_SPEED
+        elseif (ball.y)>player2.y -10 then
+            player2.dy = PADDLE_SPEED
+        else
+            player2.dy = 0
+        end
+
+    else
+        if (VIRTUAL_HEIGHT/2 - 2)<player2.y-10 then
+            player2.dy = -PADDLE_SPEED
+        elseif (VIRTUAL_HEIGHT/2 - 2)>player2.y-10 then
+            player2.dy = PADDLE_SPEED
+        else
+            player2.dy = 0
+        end
+    end ]]
+
+    --[[ if ball.dx<0 then
+
+        if ball.y<player1.y-10 then        
+            player1.dy = -PADDLE_SPEED
+        elseif (ball.y)>player1.y -10 then
+            player1.dy = PADDLE_SPEED
+        else
+            player1.dy = 0
+        end
+
+    else
+        if (VIRTUAL_HEIGHT/2 - 2)<player1.y-10 then
+            player1.dy = -PADDLE_SPEED
+        elseif (VIRTUAL_HEIGHT/2 - 2)>player1.y-10 then
+            player1.dy = PADDLE_SPEED
+        else
+            player1.dy = 0
+        end
+    end 
+
+     ez sol 2
+        player2.y = ball.y - 10
+    player1.y = ball.y - 10 
+    Technically, a player could predict the final position of the ball
+    by knowing its initial angle and position. This initial angle is
+]]
+
+
+
+end
+--player2
+
+ballAngle = math.atan(ball.dy/ball.dx)
+
+
+
+
+   
+       
+if (player2.y + 4 < ball.y - 4) then
+    player2.dy = PADDLE_SPEED
+elseif (player2.y - 4 > ball.y) then
+    player2.dy = -PADDLE_SPEED
+    --[[ if (VIRTUAL_HEIGHT/2 - 2)<player2.y-10 then
+        player2.dy = PADDLE_SPEED
+    elseif (VIRTUAL_HEIGHT/2 - 2)>player2.y then
+        player2.dy = -PADDLE_SPEED
+    else
+        player2.dy = 0
+    end  ]]
+else
+    player2.dy = 0
+    
+end
+
+--player1
+--[[ if (player1.y < ball.y - 4) then
+    player1.dy = PADDLE_SPEED
+elseif (player1.y-10 > ball.y) then
+    player1.dy = -PADDLE_SPEED
+    --[[ if (VIRTUAL_HEIGHT/2 - 2)<player2.y-10 then
+        player2.dy = PADDLE_SPEED
+    elseif (VIRTUAL_HEIGHT/2 - 2)>player2.y then
+        player2.dy = -PADDLE_SPEED
+    else
+        player2.dy = 0
+    end 
+else
+    player1.dy = 0 
+    
+end]]
+
+
+
+--[[ if (VIRTUAL_HEIGHT/2 - 2)<player2.y-10 then
+                player2.dy = PADDLE_SPEED
+            elseif (VIRTUAL_HEIGHT/2 - 2)>player2.y then
+                player2.dy = -PADDLE_SPEED
+            else
+                player2.dy = 0
+            end 
+            
+        end ]]
+
+function AI:predict(player,ball,PADDLE_SPEED,dt)
+    if not (ball.dx == 0) then
+        ballDir = ball.dy/ball.dx
+    else
+        ballDir = 0
+    end
+    distX = math.abs(ball.x - player.x)
+    distY = VIRTUAL_HEIGHT/2 - 2 - math.abs(ball.y)
+    --dist = math.sqrt(distX*distX + distY*distY)
+     --catantheta = co, the distance between one bump and another upon the midscreen line
+    period = 2*(distY*math.tan(ballDir))
+
+    fit = period/(VIRTUAL_WIDTH - 22 - distX)
+
+    if fit < 1 then
+        future = distX*ballDir
+        player.dy = future
+        --[[ if (player.y > future) then
+            player.y = future
+        elseif (player.y < future) then
+            player.y = future
+        else
+            player.dy = 0
+    
+        end ]]
+    end
+
+
+end
+    
+
+math.pow(ball.x,2) 
+and (math.pow(ball.x,2) + math.pow(ball.y,2)/(math.pow(ball.dx,2) + math.pow(ball.dy,2)) >= (math.pow(ball.y - player.y,2)/math.pow(ball.dy - player.dy,2))) 
+
+/(math.pow(ball.dx,2) + math.pow(ball.dy - PADDLE_SPEED,2)) > (math.pow(player.y,2)/math.pow(PADDLE_SPEED,2)))
+
+(VIRTUAL_HEIGHT/2 - 2)*math.abs(ball.dy) > (PADDLE_SPEED*VIRTUAL_HEIGHT/2 - 2)
+
+
+            elseif math.abs(- ball.x + player.x) < 8*VIRTUAL_WIDTH/10 and (math.pow(ball.dx,2) > 1.8*math.pow(PADDLE_SPEED,2) or (math.abs(ball.dx) < math.abs(ball.dy)) or math.abs(ball.y - VIRTUAL_HEIGHT*1.5 - 2)>math.abs(player.y - VIRTUAL_HEIGHT*1.5 - 2)) then
+math.pow(ball.dx,2) > 1.8*math.pow(PADDLE_SPEED,2) or 
+function AI:predict(player,ball,PADDLE_SPEED,dt)
+
+    xToBall = math.abs(ball.x - player.x + VIRTUAL_WIDTH)
+    distY = VIRTUAL_HEIGHT/2 - 2 - math.abs(ball.y)
+    if not (ball.dx == 0) then
+        ballDir = math.atan((ball.dy)/(ball.dx))
+        future = xToBall*math.sin(ballDir)*(ball.dy/math.abs(ball.dy))
+        period = 2*(distY*math.tan(ballDir))
+        --future = (VIRTUAL_HEIGHT/math.pi)*math.asin(math.sin((2*math.pi*ball.x)/period))
+        
+        player.y = future
+
+    else
+        ballDir = 0
+        player.dy = 0
+    end
+
+
+end
+
+math.abs(ball.dx) < PADDLE_SPEED
+
+math.abs((VIRTUAL_HEIGHT/2 - 2 - ball.y)*math.abs(ball.dy)) > math.abs((PADDLE_SPEED*(VIRTUAL_HEIGHT/2 - 2 - player.y)))
+
+
+            if (math.pow(ball.x,2) + math.pow(ball.y - player.y,2))/(math.pow(ball.dy,2) + math.pow(ball.dx,2)) >= (math.pow(ball.y - player.y,2))/math.pow(PADDLE_SPEED,2) then
